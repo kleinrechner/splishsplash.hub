@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplishSplash.Hub", "SplishSplash.Hub\SplishSplash.Hub.csproj", "{B2DC62A4-77E0-45CF-888B-E0E4FA078A55}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B2DC62A4-77E0-45CF-888B-E0E4FA078A55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2DC62A4-77E0-45CF-888B-E0E4FA078A55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2DC62A4-77E0-45CF-888B-E0E4FA078A55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2DC62A4-77E0-45CF-888B-E0E4FA078A55}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {73A9363D-A1D8-4EB7-AC0E-63252653F0D5}
+	EndGlobalSection
+EndGlobal

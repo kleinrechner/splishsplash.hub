@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SplishSplash.Hub.Hubs
+namespace Kleinrechner.SplishSplash.Hub.Hubs
 {
     public interface ISplishSplashHub
     {

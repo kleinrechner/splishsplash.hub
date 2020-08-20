@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
-namespace SplishSplash.Hub.Hubs
+namespace Kleinrechner.SplishSplash.Hub.Hubs
 {
     [Authorize]
     public class SplishSplashHub : Microsoft.AspNetCore.SignalR.Hub

@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Kleinrechner.SplishSplash.Hub.SettingsService</AssemblyName>
+    <RootNamespace>Kleinrechner.SplishSplash.Hub.SettingsService</RootNamespace>
+    <Copyright>Copyright © Kleinrechner 2020</Copyright>
+    <PackageProjectUrl>https://kleinrechner.visualstudio.com/SplishSplash</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://kleinrechner.visualstudio.com/SplishSplash/_git/SplishSplash.Hub</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Kleinrechner.SplishSplash.Backend.Authentication.Abstractions" Version="1.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SplishSplash.Hub.SettingsService.Abstractions\SplishSplash.Hub.SettingsService.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -23,6 +23,7 @@ namespace Kleinrechner.SplishSplash.Hub
                     config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath);
                     config.AddJsonFile("appsettings.json", false, true);
                     config.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", true);
+                    config.AddJsonFile($"AuthenticationSettings.json", true, true);
                     config.AddEnvironmentVariables();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>

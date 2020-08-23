@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Kleinrechner.SplishSplash.Hub.Hubs;
 using Microsoft.AspNetCore.Http;
+using Microsoft.OpenApi.Models;
 
 namespace Kleinrechner.SplishSplash.Hub
 {
@@ -33,7 +34,23 @@ namespace Kleinrechner.SplishSplash.Hub
             services.AddOptions();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                // configure SwaggerDoc and others
+
+                // add Basic Authentication
+                var basicSecurityScheme = new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "basic",
+                    Reference = new OpenApiReference { Id = "BasicAuth", Type = ReferenceType.SecurityScheme }
+                };
+                c.AddSecurityDefinition(basicSecurityScheme.Reference.Id, basicSecurityScheme);
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {basicSecurityScheme, new string[] { }}
+                });
+            });
 
             services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
             {
@@ -48,11 +65,9 @@ namespace Kleinrechner.SplishSplash.Hub
             services.AddSignalR();
             //.AddMessagePackProtocol();
 
-            // configure basic authentication 
-            services.AddAuthentication("BasicAuthentication")
-                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+            Backend.Authentication.Infrastructure.Startup.ConfigureServices(services, Configuration);
 
-            //services.AddTransient<IGpioService, GpioService>();
+            SettingsService.Infrastructure.Startup.ConfigureServices(services, Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,8 +96,7 @@ namespace Kleinrechner.SplishSplash.Hub
 
             app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+            Backend.Authentication.Infrastructure.Startup.Configure(app, env);
 
             app.UseEndpoints(endpoints =>
             {

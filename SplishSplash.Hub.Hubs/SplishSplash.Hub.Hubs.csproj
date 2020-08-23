@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Kleinrechner.SplishSplash.Hub.Hubs</AssemblyName>
+    <RootNamespace>Kleinrechner.SplishSplash.Hub.Hubs</RootNamespace>
+    <Copyright>Copyright © Kleinrechner 2020</Copyright>
+    <PackageProjectUrl>https://kleinrechner.visualstudio.com/SplishSplash</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://kleinrechner.visualstudio.com/SplishSplash/_git/SplishSplash.Hub</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Kleinrechner.SplishSplash.Backend.HubClientBackgroundService.Abstractions" Version="1.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.7" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SplishSplash.Hub.Hubs.Abstractions\SplishSplash.Hub.Hubs.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

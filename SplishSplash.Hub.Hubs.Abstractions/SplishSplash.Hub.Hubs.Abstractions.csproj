@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Kleinrechner.SplishSplash.Hub.Hubs.Abstractions</AssemblyName>
+    <RootNamespace>Kleinrechner.SplishSplash.Hub.Hubs.Abstractions</RootNamespace>
+    <Copyright>Copyright © Kleinrechner 2020</Copyright>
+    <PackageProjectUrl>https://kleinrechner.visualstudio.com/SplishSplash</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://kleinrechner.visualstudio.com/SplishSplash/_git/SplishSplash.Hub</RepositoryUrl>
+  </PropertyGroup>
+
+</Project>

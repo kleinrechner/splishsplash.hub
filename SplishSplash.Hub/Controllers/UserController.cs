@@ -12,11 +12,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Swashbuckle.Swagger.Annotations;
 
 namespace Kleinrechner.SplishSplash.Hub.Controllers
 {
     [ApiController]
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [Authorize(Roles = "Administrator")]
     public class UserController : ControllerBase
@@ -40,17 +40,21 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
 
         #region Methods
 
+        /// <response code="200">Successful operation</response>
         [HttpGet("Get")]
-        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(List<LoginUser>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<LoginUser>))]
         public IEnumerable<LoginUser> Get()
         {
             var loginUsers = _authenticationSettings.Value.Users.Select(x => x.WithoutPassword()).ToList();
             return loginUsers;
         }
 
+        /// <param name="loginName">Name of the login user</param>
+        /// <response code="200">Successful operation</response>
+        /// <response code="404">User could not be found</response>
         [HttpGet("{loginName}")]
-        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(LoginUser))]
-        [SwaggerResponse(HttpStatusCode.NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LoginUser))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Get([FromRoute] string loginName)
         {
             var authenticationSettings = _authenticationSettings.Value;
@@ -67,9 +71,12 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
             }
         }
 
+        /// <param name="loginName">Name of the login user</param>
+        /// <response code="200">Successful operation</response>
+        /// <response code="400">User already exists or invalid role</response>
         [HttpPost("create")]
-        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(LoginUser))]
-        [SwaggerResponse(HttpStatusCode.BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LoginUser))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Create([FromBody] CreateLoginUser createLoginUser)
         {
             var authenticationSettings = _authenticationSettings.Value;
@@ -100,9 +107,12 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
             }
         }
 
+        /// <param name="loginName">Name of the login user</param>
+        /// <response code="200">Successful operation</response>
+        /// <response code="404">User could not be found</response>
         [HttpPut("{loginName}/password")]
-        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(LoginUser))]
-        [SwaggerResponse(HttpStatusCode.NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LoginUser))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
 
         public IActionResult UpdatePassword([FromRoute] string loginName, [FromBody] string password)
         {
@@ -127,10 +137,14 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
             }
         }
 
+        /// <param name="loginName">Name of the login user</param>
+        /// <response code="200">Successful operation</response>
+        /// <response code="400">Invalid role</response>
+        /// <response code="404">User could not be found</response>
         [HttpPut("{loginName}/role")]
-        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(LoginUser))]
-        [SwaggerResponse(HttpStatusCode.NotFound)]
-        [SwaggerResponse(HttpStatusCode.BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LoginUser))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult UpdateRole([FromRoute] string loginName, [FromBody] string roleName)
         {
             var authenticationSettings = _authenticationSettings.Value;
@@ -159,9 +173,12 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
             }
         }
 
+        /// <param name="loginName">Name of the login user</param>
+        /// <response code="200">Successful operation</response>
+        /// <response code="404">User could not be found</response>
         [HttpDelete("{loginName}/delete")]
-        [SwaggerResponse(HttpStatusCode.OK)]
-        [SwaggerResponse(HttpStatusCode.NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Delete([FromRoute] string loginName)
         {
             var authenticationSettings = _authenticationSettings.Value;

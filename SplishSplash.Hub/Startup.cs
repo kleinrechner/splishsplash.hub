@@ -68,6 +68,7 @@ namespace Kleinrechner.SplishSplash.Hub
             Backend.Authentication.Infrastructure.Startup.ConfigureServices(services, Configuration);
 
             SettingsService.Infrastructure.Startup.ConfigureServices(services, Configuration);
+            Hubs.Infrastructure.Startup.ConfigureServices(services, Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

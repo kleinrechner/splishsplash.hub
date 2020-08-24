@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.SignalR;
 namespace Kleinrechner.SplishSplash.Hub.Hubs
 {
     [Authorize]
-    public class SplishSplashHub : Microsoft.AspNetCore.SignalR.Hub<ISplishSplashHubClient>
+    public class SplishSplashHub : Microsoft.AspNetCore.SignalR.Hub<ISplishSplashHubClient>, ISplishSplashHub
     {
         #region Fields
 

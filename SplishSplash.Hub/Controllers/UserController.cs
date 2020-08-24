@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Swashbuckle.Swagger.Annotations;
 
 namespace Kleinrechner.SplishSplash.Hub.Controllers
 {
@@ -40,6 +41,7 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
         #region Methods
 
         [HttpGet("Get")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(List<LoginUser>))]
         public IEnumerable<LoginUser> Get()
         {
             var loginUsers = _authenticationSettings.Value.Users.Select(x => x.WithoutPassword()).ToList();
@@ -47,6 +49,8 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
         }
 
         [HttpGet("{loginName}")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(LoginUser))]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
         public IActionResult Get([FromRoute] string loginName)
         {
             var authenticationSettings = _authenticationSettings.Value;
@@ -64,6 +68,8 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
         }
 
         [HttpPost("create")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(LoginUser))]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
         public IActionResult Create([FromBody] CreateLoginUser createLoginUser)
         {
             var authenticationSettings = _authenticationSettings.Value;
@@ -72,6 +78,11 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
             var loginUser = loginUsers.FirstOrDefault(x => x.LoginName.ToLower() == createLoginUser.LoginName.ToLower());
             if (loginUser == null)
             {
+                if (!ValidRole(createLoginUser.Role))
+                {
+                    return BadRequest("Invalid rolename");
+                }
+
                 loginUser = new LoginUser();
                 loginUser.LoginName = createLoginUser.LoginName;
                 loginUser.PasswordMD5Hash = createLoginUser.Password.GetMD5Hash();
@@ -85,11 +96,13 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
             }
             else
             {
-                return BadRequest();
+                return BadRequest("LoginName already exist");
             }
         }
 
         [HttpPut("{loginName}/password")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(LoginUser))]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
 
         public IActionResult UpdatePassword([FromRoute] string loginName, [FromBody] string password)
         {
@@ -115,6 +128,9 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
         }
 
         [HttpPut("{loginName}/role")]
+        [SwaggerResponse(HttpStatusCode.OK, Type=typeof(LoginUser))]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
         public IActionResult UpdateRole([FromRoute] string loginName, [FromBody] string roleName)
         {
             var authenticationSettings = _authenticationSettings.Value;
@@ -123,6 +139,11 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
             var loginUser = loginUsers.FirstOrDefault(x => x.LoginName.ToLower() == loginName.ToLower());
             if (loginUser != null)
             {
+                if (!ValidRole(roleName))
+                {
+                    return BadRequest("Invalid rolename");
+                }
+
                 var i = loginUsers.IndexOf(loginUser);
                 loginUser.Role = roleName;
 
@@ -139,6 +160,8 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
         }
 
         [HttpDelete("{loginName}/delete")]
+        [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
         public IActionResult Delete([FromRoute] string loginName)
         {
             var authenticationSettings = _authenticationSettings.Value;
@@ -158,6 +181,18 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
             {
                 return NotFound(loginName);
             }
+        }
+
+        private bool ValidRole(string roleName)
+        {
+            var validRoleNames = new List<string>()
+            {
+                "Administrator",
+                "Backend",
+                "Frontend"
+            };
+
+            return validRoleNames.Contains(roleName);
         }
 
         #endregion

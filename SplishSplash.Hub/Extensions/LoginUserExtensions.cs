@@ -10,8 +10,11 @@ namespace Kleinrechner.SplishSplash.Hub.Extensions
     {
         public static LoginUser WithoutPassword(this LoginUser loginUser)
         {
-            loginUser.PasswordMD5Hash = string.Empty;
-            return loginUser;
+            return new LoginUser()
+            {
+                LoginName = loginUser.LoginName,
+                Role = loginUser.Role
+            };
         }
     }
 }

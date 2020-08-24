@@ -30,7 +30,7 @@ namespace Kleinrechner.SplishSplash.Hub.SettingsService
 
         public void Save(AuthenticationSettings value)
         {
-            var filePath = Path.Combine(_webHostEnvironment.ContentRootPath, "AuthenticationSettings.json");
+            var filePath = Path.Combine(_webHostEnvironment.ContentRootPath, "App_Data", "AuthenticationSettings.json");
 
             var jsonString = System.IO.File.ReadAllText(filePath);
             var authenticationSettingsModel = JsonConvert.DeserializeObject<AuthenticationSettingsModel>(jsonString);

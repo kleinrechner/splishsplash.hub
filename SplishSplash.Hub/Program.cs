@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -23,7 +24,7 @@ namespace Kleinrechner.SplishSplash.Hub
                     config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath);
                     config.AddJsonFile("appsettings.json", false, true);
                     config.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", true);
-                    config.AddJsonFile($"AuthenticationSettings.json", true, true);
+                    config.AddJsonFile(Path.Combine("App_Data", "AuthenticationSettings.json"), true, true);
                     config.AddEnvironmentVariables();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>

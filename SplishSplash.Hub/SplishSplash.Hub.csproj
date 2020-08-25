@@ -11,13 +11,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Kleinrechner.SplishSplash.Backend.Authentication" Version="1.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="3.1.7" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SplishSplash.Hub.Authentication.Abstractions\SplishSplash.Hub.Authentication.Abstractions.csproj" />
+    <ProjectReference Include="..\SplishSplash.Hub.Authentication\SplishSplash.Hub.Authentication.csproj" />
     <ProjectReference Include="..\SplishSplash.Hub.Hubs\SplishSplash.Hub.Hubs.csproj" />
     <ProjectReference Include="..\SplishSplash.Hub.SettingsService\SplishSplash.Hub.SettingsService.csproj" />
   </ItemGroup>

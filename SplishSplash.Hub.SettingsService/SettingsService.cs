@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Kleinrechner.SplishSplash.Backend.Authentication.Abstractions;
+using Kleinrechner.SplishSplash.Hub.Authentication.Abstractions;
 using Kleinrechner.SplishSplash.Hub.SettingsService.Abstractions;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;

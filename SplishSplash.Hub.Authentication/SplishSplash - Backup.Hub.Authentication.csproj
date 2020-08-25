@@ -2,8 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>Kleinrechner.SplishSplash.Hub.SettingsService.Abstractions</AssemblyName>
-    <RootNamespace>Kleinrechner.SplishSplash.Hub.SettingsService.Abstractions</RootNamespace>
+    <AssemblyName>Kleinrechner.SplishSplash.Hub.Authentication</AssemblyName>
+    <RootNamespace>Kleinrechner.SplishSplash.Hub.Authentication</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Copyright>Copyright © Kleinrechner 2020</Copyright>
     <PackageProjectUrl>https://kleinrechner.visualstudio.com/SplishSplash</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
@@ -11,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SplishSplash.Hub.Authentication.Abstractions\SplishSplash.Hub.Authentication.Abstractions.csproj" />
+    <Folder Include="NewFolder\" />
   </ItemGroup>
 
 </Project>

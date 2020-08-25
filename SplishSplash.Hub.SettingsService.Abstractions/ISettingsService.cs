@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Kleinrechner.SplishSplash.Backend.Authentication.Abstractions;
+using Kleinrechner.SplishSplash.Hub.Authentication.Abstractions;
 
 namespace Kleinrechner.SplishSplash.Hub.SettingsService.Abstractions
 {

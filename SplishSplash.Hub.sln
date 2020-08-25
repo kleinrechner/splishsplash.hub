@@ -7,13 +7,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SplishSplash.Hub", "SplishS
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{61885E08-4E4A-45BB-A57A-9F4E2C59FC09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplishSplash.Hub.Hubs", "SplishSplash.Hub.Hubs\SplishSplash.Hub.Hubs.csproj", "{E765FA7A-A3B9-4D7E-AE14-92A3D2EE67AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SplishSplash.Hub.Hubs", "SplishSplash.Hub.Hubs\SplishSplash.Hub.Hubs.csproj", "{E765FA7A-A3B9-4D7E-AE14-92A3D2EE67AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplishSplash.Hub.Hubs.Abstractions", "SplishSplash.Hub.Hubs.Abstractions\SplishSplash.Hub.Hubs.Abstractions.csproj", "{39329E74-2F16-4B15-8A7C-4C52876D0255}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SplishSplash.Hub.Hubs.Abstractions", "SplishSplash.Hub.Hubs.Abstractions\SplishSplash.Hub.Hubs.Abstractions.csproj", "{39329E74-2F16-4B15-8A7C-4C52876D0255}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplishSplash.Hub.SettingsService.Abstractions", "SplishSplash.Hub.SettingsService.Abstractions\SplishSplash.Hub.SettingsService.Abstractions.csproj", "{7D5CDD1B-50A5-459A-8DEE-BDD3782E0855}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SplishSplash.Hub.SettingsService.Abstractions", "SplishSplash.Hub.SettingsService.Abstractions\SplishSplash.Hub.SettingsService.Abstractions.csproj", "{7D5CDD1B-50A5-459A-8DEE-BDD3782E0855}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplishSplash.Hub.SettingsService", "SplishSplash.Hub.SettingsService\SplishSplash.Hub.SettingsService.csproj", "{73125A5E-9F81-4200-8C6F-88CBF3396F74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SplishSplash.Hub.SettingsService", "SplishSplash.Hub.SettingsService\SplishSplash.Hub.SettingsService.csproj", "{73125A5E-9F81-4200-8C6F-88CBF3396F74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplishSplash.Hub.Authentication.Abstractions", "SplishSplash.Hub.Authentication.Abstractions\SplishSplash.Hub.Authentication.Abstractions.csproj", "{EBFAC3DF-0940-40FB-8227-57FB2AD0C5E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplishSplash.Hub.Authentication", "SplishSplash.Hub.Authentication\SplishSplash.Hub.Authentication.csproj", "{1B3F84FA-CCD3-49BC-B988-F096044C53F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +45,14 @@ Global
 		{73125A5E-9F81-4200-8C6F-88CBF3396F74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73125A5E-9F81-4200-8C6F-88CBF3396F74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73125A5E-9F81-4200-8C6F-88CBF3396F74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBFAC3DF-0940-40FB-8227-57FB2AD0C5E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBFAC3DF-0940-40FB-8227-57FB2AD0C5E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBFAC3DF-0940-40FB-8227-57FB2AD0C5E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBFAC3DF-0940-40FB-8227-57FB2AD0C5E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B3F84FA-CCD3-49BC-B988-F096044C53F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B3F84FA-CCD3-49BC-B988-F096044C53F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B3F84FA-CCD3-49BC-B988-F096044C53F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B3F84FA-CCD3-49BC-B988-F096044C53F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +62,8 @@ Global
 		{39329E74-2F16-4B15-8A7C-4C52876D0255} = {61885E08-4E4A-45BB-A57A-9F4E2C59FC09}
 		{7D5CDD1B-50A5-459A-8DEE-BDD3782E0855} = {61885E08-4E4A-45BB-A57A-9F4E2C59FC09}
 		{73125A5E-9F81-4200-8C6F-88CBF3396F74} = {61885E08-4E4A-45BB-A57A-9F4E2C59FC09}
+		{EBFAC3DF-0940-40FB-8227-57FB2AD0C5E7} = {61885E08-4E4A-45BB-A57A-9F4E2C59FC09}
+		{1B3F84FA-CCD3-49BC-B988-F096044C53F7} = {61885E08-4E4A-45BB-A57A-9F4E2C59FC09}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {73A9363D-A1D8-4EB7-AC0E-63252653F0D5}

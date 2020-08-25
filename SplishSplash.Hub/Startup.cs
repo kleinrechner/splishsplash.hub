@@ -65,7 +65,7 @@ namespace Kleinrechner.SplishSplash.Hub
             services.AddSignalR();
             //.AddMessagePackProtocol();
 
-            Backend.Authentication.Infrastructure.Startup.ConfigureServices(services, Configuration);
+            Authentication.Infrastructure.Startup.ConfigureServices(services, Configuration);
 
             SettingsService.Infrastructure.Startup.ConfigureServices(services, Configuration);
             Hubs.Infrastructure.Startup.ConfigureServices(services, Configuration);
@@ -97,7 +97,7 @@ namespace Kleinrechner.SplishSplash.Hub
 
             app.UseRouting();
 
-            Backend.Authentication.Infrastructure.Startup.Configure(app, env);
+            Authentication.Infrastructure.Startup.Configure(app, env);
 
             app.UseEndpoints(endpoints =>
             {

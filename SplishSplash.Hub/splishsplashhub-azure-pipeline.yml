@@ -28,6 +28,33 @@ steps:
     arguments: '--configuration $(buildConfiguration)' # Update this to match your need
 
 - task: DotNetCoreCLI@2
+  displayName: "dotnet pack SplishSplash.Hub.Authentication"
+  inputs:
+    command: 'pack'
+    arguments: '--configuration $(buildConfiguration)'
+    packagesToPack: 'SplishSplash.Hub.Authentication/SplishSplash.Hub.Authentication.csproj'
+    nobuild: true
+    versioningScheme: 'off'
+
+- task: DotNetCoreCLI@2
+  displayName: "dotnet pack SplishSplash.Hub.Authentication.Abstractions"
+  inputs:
+    command: 'pack'
+    arguments: '--configuration $(buildConfiguration)'
+    packagesToPack: 'SplishSplash.Hub.Authentication.Abstractions/SplishSplash.Hub.Authentication.Abstractions.csproj'
+    nobuild: true
+    versioningScheme: 'off'
+
+- task: NuGetCommand@2
+  displayName: NuGet Push
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: '56a906f6-92f1-4ea1-8474-dbd9bbad7ba0/d8ca8f72-a3c7-4dc5-aeed-8ac7e6f5a3fd'
+    allowPackageConflicts: true
+
+- task: DotNetCoreCLI@2
   displayName: .net Core Publish
   inputs:
     command: publish

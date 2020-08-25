@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Kleinrechner.SplishSplash.Backend.Authentication.Abstractions;
+using System.Text;
+using Kleinrechner.SplishSplash.Hub.Authentication.Abstractions.Models;
 
-namespace Kleinrechner.SplishSplash.Hub.Extensions
+namespace Kleinrechner.SplishSplash.Hub.Authentication.Extensions
 {
     public static class LoginUserExtensions
     {

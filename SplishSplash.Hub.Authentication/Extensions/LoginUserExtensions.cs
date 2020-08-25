@@ -11,6 +11,7 @@ namespace Kleinrechner.SplishSplash.Hub.Authentication.Extensions
         {
             return new LoginUser()
             {
+                DisplayName = loginUser.DisplayName,
                 LoginName = loginUser.LoginName,
                 Role = loginUser.Role
             };

@@ -5,13 +5,9 @@ using System.Threading.Tasks;
 
 namespace Kleinrechner.SplishSplash.Hub.Models
 {
-    public class CreateLoginUser
+    public class UpdateLoginUser
     {
         public string DisplayName { get; set; }
-        
-        public string LoginName { get; set; }
-
-        public string Password { get; set; }
 
         public string Role { get; set; }
     }

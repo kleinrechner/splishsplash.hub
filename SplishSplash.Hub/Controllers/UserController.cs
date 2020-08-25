@@ -18,22 +18,24 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
     [ApiController]
     [Produces("application/json")]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = nameof(LoginUserRoles.Administrator))]
     public class UserController : ControllerBase
     {
         #region Fields
 
         private readonly IOptions<AuthenticationSettings> _authenticationSettings;
+        private readonly IAuthenticationService _authenticationService;
         private readonly ISettingsService _settingsService;
 
         #endregion
 
         #region Ctor
 
-        public UserController(IOptions<AuthenticationSettings> authenticationSettings, ISettingsService settingsService)
+        public UserController(IOptions<AuthenticationSettings> authenticationSettings, IAuthenticationService authenticationService, ISettingsService settingsService)
         {
             _authenticationSettings = authenticationSettings;
             _settingsService = settingsService;
+            _authenticationService = authenticationService;
         }
 
         #endregion
@@ -91,6 +93,7 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
                 }
 
                 loginUser = new LoginUser();
+                loginUser.DisplayName = createLoginUser.DisplayName;
                 loginUser.LoginName = createLoginUser.LoginName;
                 loginUser.PasswordMD5Hash = createLoginUser.Password.GetMD5Hash();
                 loginUser.Role = createLoginUser.Role;
@@ -104,6 +107,40 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
             else
             {
                 return BadRequest("LoginName already exist");
+            }
+        }
+
+        /// <param name="loginName">Name of the login user</param>
+        /// <response code="200">Successful operation</response>
+        /// <response code="400">Invalid role</response>
+        /// <response code="404">User could not be found</response>
+        [HttpPut("{loginName}/update")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LoginUser))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Update([FromRoute] string loginName, [FromBody] UpdateLoginUser updateLoginUser)
+        {
+            var authenticationSettings = _authenticationSettings.Value;
+            
+            var loginUsers = authenticationSettings.Users;
+            var loginUser = loginUsers.FirstOrDefault(x => x.LoginName.ToLower() == loginName.ToLower());
+            if (loginUser != null)
+            {
+                if (!ValidRole(updateLoginUser.Role))
+                {
+                    return BadRequest("Invalid rolename");
+                }
+
+                loginUser.Role = updateLoginUser.Role;
+                loginUser.DisplayName = updateLoginUser.DisplayName;
+
+                _settingsService.Save(authenticationSettings);
+
+                return Ok(loginUser.WithoutPassword());
+            }
+            else
+            {
+                return NotFound(loginName);
             }
         }
 
@@ -124,42 +161,6 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
             {
                 var i = loginUsers.IndexOf(loginUser);
                 loginUser.PasswordMD5Hash = password;
-
-                loginUsers[i] = loginUser;
-                authenticationSettings.Users = loginUsers;
-                _settingsService.Save(authenticationSettings);
-
-                return Ok(loginUser.WithoutPassword());
-            }
-            else
-            {
-                return NotFound(loginName);
-            }
-        }
-
-        /// <param name="loginName">Name of the login user</param>
-        /// <response code="200">Successful operation</response>
-        /// <response code="400">Invalid role</response>
-        /// <response code="404">User could not be found</response>
-        [HttpPut("{loginName}/role")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LoginUser))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult UpdateRole([FromRoute] string loginName, [FromBody] string roleName)
-        {
-            var authenticationSettings = _authenticationSettings.Value;
-            var loginUsers = authenticationSettings.Users;
-
-            var loginUser = loginUsers.FirstOrDefault(x => x.LoginName.ToLower() == loginName.ToLower());
-            if (loginUser != null)
-            {
-                if (!ValidRole(roleName))
-                {
-                    return BadRequest("Invalid rolename");
-                }
-
-                var i = loginUsers.IndexOf(loginUser);
-                loginUser.Role = roleName;
 
                 loginUsers[i] = loginUser;
                 authenticationSettings.Users = loginUsers;
@@ -202,13 +203,7 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
 
         private bool ValidRole(string roleName)
         {
-            var validRoleNames = new List<string>()
-            {
-                "Administrator",
-                "Backend",
-                "Frontend"
-            };
-
+            var validRoleNames = _authenticationService.GetRoleNames();
             return validRoleNames.Contains(roleName);
         }
 

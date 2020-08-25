@@ -38,7 +38,7 @@ namespace Kleinrechner.SplishSplash.Hub.Hubs
                 //await Clients.All.SendAsync("newMessage", "system", $"{Context.User.Identity.Name} joined");
             }
 
-            var roleName = Context.User.FindFirst(ClaimTypes.Role)?.Value;
+            var roleName = GetRoleName();
             if (!string.IsNullOrWhiteSpace(roleName))
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, roleName);
@@ -57,7 +57,7 @@ namespace Kleinrechner.SplishSplash.Hub.Hubs
                 //await Clients.All.SendAsync("newMessage", "system", $"{Context.User.Identity.Name} left");
             }
 
-            var roleName = Context.User.FindFirst(ClaimTypes.Role)?.Value;
+            var roleName = GetRoleName();
             if (!string.IsNullOrWhiteSpace(roleName))
             {
                 await Groups.RemoveFromGroupAsync(Context.ConnectionId, roleName);
@@ -70,6 +70,16 @@ namespace Kleinrechner.SplishSplash.Hub.Hubs
         {
             //return Clients.All.SendAsync("ReceiveMessage", user, message);
             return Task.CompletedTask;
+        }
+
+        private string GetRoleName()
+        {
+            return Context.User.FindFirst(ClaimTypes.Role)?.Value;
+        }
+
+        private string GetDisplayName()
+        {
+            return Context.User.FindFirst(ClaimTypes.Name)?.Value;
         }
 
         #endregion

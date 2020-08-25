@@ -7,6 +7,8 @@ namespace Kleinrechner.SplishSplash.Hub.Authentication.Abstractions
 {
     public interface IAuthenticationService
     {
+        List<string> GetRoleNames();
+
         List<LoginUser> GetLoginUsers();
     }
 }

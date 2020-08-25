@@ -8,6 +8,8 @@ namespace Kleinrechner.SplishSplash.Hub.Authentication.Abstractions.Models
     {
         #region Fields
 
+        public string DisplayName { get; set; }
+        
         public string LoginName { get; set; }
 
         public string PasswordMD5Hash { get; set; }

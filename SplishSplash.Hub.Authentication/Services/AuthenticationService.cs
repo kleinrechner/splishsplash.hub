@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Kleinrechner.SplishSplash.Hub.Authentication.Abstractions;
 using Kleinrechner.SplishSplash.Hub.Authentication.Abstractions.Models;
@@ -25,7 +26,12 @@ namespace Kleinrechner.SplishSplash.Hub.Authentication.Services
 
         #region Methods
 
-        public List<LoginUser> GetLoginUsers()
+        public virtual List<string> GetRoleNames()
+        {
+            return Enum.GetNames(typeof(LoginUserRoles)).ToList();
+        }
+
+        public virtual List<LoginUser> GetLoginUsers()
         {
             return _authenticationSettings.Value.Users;
         }

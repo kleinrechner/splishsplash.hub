@@ -56,12 +56,17 @@ namespace Kleinrechner.SplishSplash.Hub.Authentication
 
                 if (loginUser != null)
                 {
-                    var claims = new[] {
-                        new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()),
-                        new Claim(ClaimTypes.Name, loginUser.LoginName.ToLower()),
+                    var claimList = new List<Claim>(new[] {
+                        new Claim(ClaimTypes.NameIdentifier, loginUser.LoginName.ToLower()),
                         new Claim(ClaimTypes.Role, loginUser.Role)
-                    };
-                    var identity = new ClaimsIdentity(claims, Scheme.Name);
+                    });
+
+                    if (!string.IsNullOrWhiteSpace(loginUser.DisplayName))
+                    {
+                        claimList.Add(new Claim(ClaimTypes.Name, loginUser.DisplayName));
+                    }
+
+                    var identity = new ClaimsIdentity(claimList.ToArray(), Scheme.Name);
                     var principal = new ClaimsPrincipal(identity);
                     var ticket = new AuthenticationTicket(principal, Scheme.Name);
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Kleinrechner.SplishSplash.Hub.Hubs;
+using Kleinrechner.SplishSplash.Hub.Validator;
 using Microsoft.AspNetCore.Http;
 using Microsoft.OpenApi.Models;
 
@@ -60,7 +62,8 @@ namespace Kleinrechner.SplishSplash.Hub
                     .AllowAnyOrigin();
             }));
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UpdateLoginUserValidator>());
 
             services.AddSignalR();
             //.AddMessagePackProtocol();

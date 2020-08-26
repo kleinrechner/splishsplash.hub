@@ -24,18 +24,16 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
         #region Fields
 
         private readonly IOptions<AuthenticationSettings> _authenticationSettings;
-        private readonly IAuthenticationService _authenticationService;
         private readonly ISettingsService _settingsService;
 
         #endregion
 
         #region Ctor
 
-        public UserController(IOptions<AuthenticationSettings> authenticationSettings, IAuthenticationService authenticationService, ISettingsService settingsService)
+        public UserController(IOptions<AuthenticationSettings> authenticationSettings, ISettingsService settingsService)
         {
             _authenticationSettings = authenticationSettings;
             _settingsService = settingsService;
-            _authenticationService = authenticationService;
         }
 
         #endregion
@@ -91,30 +89,17 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
             var authenticationSettings = _authenticationSettings.Value;
             var loginUsers = authenticationSettings.Users;
 
-            var loginUser = loginUsers.FirstOrDefault(x => x.LoginName.ToLower() == createLoginUser.LoginName.ToLower());
-            if (loginUser == null)
-            {
-                if (!ValidRole(createLoginUser.Role))
-                {
-                    return BadRequest("Invalid rolename");
-                }
+            var loginUser = new LoginUser();
+            loginUser.DisplayName = createLoginUser.DisplayName;
+            loginUser.LoginName = createLoginUser.LoginName;
+            loginUser.PasswordMD5Hash = createLoginUser.Password.GetMD5Hash();
+            loginUser.Role = createLoginUser.Role;
 
-                loginUser = new LoginUser();
-                loginUser.DisplayName = createLoginUser.DisplayName;
-                loginUser.LoginName = createLoginUser.LoginName;
-                loginUser.PasswordMD5Hash = createLoginUser.Password.GetMD5Hash();
-                loginUser.Role = createLoginUser.Role;
+            loginUsers.Add(loginUser);
+            authenticationSettings.Users = loginUsers;
+            _settingsService.Save(authenticationSettings);
 
-                loginUsers.Add(loginUser);
-                authenticationSettings.Users = loginUsers;
-                _settingsService.Save(authenticationSettings);
-
-                return Ok(loginUser.WithoutPassword());
-            }
-            else
-            {
-                return BadRequest("LoginName already exist");
-            }
+            return Ok(loginUser.WithoutPassword());
         }
 
         /// <param name="loginName">Name of the login user</param>
@@ -135,11 +120,6 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
                 var loginUser = loginUsers.FirstOrDefault(x => x.LoginName.ToLower() == loginName.ToLower());
                 if (loginUser != null)
                 {
-                    if (!ValidRole(updateLoginUser.Role))
-                    {
-                        return BadRequest("Invalid rolename");
-                    }
-
                     loginUser.Role = updateLoginUser.Role;
                     loginUser.DisplayName = updateLoginUser.DisplayName;
 
@@ -227,12 +207,6 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
             {
                 return BadRequest("LoginName not set");
             }
-        }
-
-        private bool ValidRole(string roleName)
-        {
-            var validRoleNames = _authenticationService.GetRoleNames();
-            return validRoleNames.Contains(roleName);
         }
 
         #endregion

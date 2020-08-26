@@ -59,17 +59,24 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Get([FromRoute] string loginName)
         {
-            var authenticationSettings = _authenticationSettings.Value;
-            var loginUsers = authenticationSettings.Users;
-
-            var loginUser = loginUsers.FirstOrDefault(x => x.LoginName.ToLower() == loginName.ToLower());
-            if (loginUser != null)
+            if (!string.IsNullOrWhiteSpace(loginName))
             {
-                return Ok(loginUser.WithoutPassword());
+                var authenticationSettings = _authenticationSettings.Value;
+                var loginUsers = authenticationSettings.Users;
+
+                var loginUser = loginUsers.FirstOrDefault(x => x.LoginName.ToLower() == loginName.ToLower());
+                if (loginUser != null)
+                {
+                    return Ok(loginUser.WithoutPassword());
+                }
+                else
+                {
+                    return NotFound(loginName);
+                }
             }
             else
             {
-                return NotFound(loginName);
+                return BadRequest("LoginName not set");
             }
         }
 
@@ -120,27 +127,34 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Update([FromRoute] string loginName, [FromBody] UpdateLoginUser updateLoginUser)
         {
-            var authenticationSettings = _authenticationSettings.Value;
-            
-            var loginUsers = authenticationSettings.Users;
-            var loginUser = loginUsers.FirstOrDefault(x => x.LoginName.ToLower() == loginName.ToLower());
-            if (loginUser != null)
+            if (!string.IsNullOrWhiteSpace(loginName))
             {
-                if (!ValidRole(updateLoginUser.Role))
+                var authenticationSettings = _authenticationSettings.Value;
+            
+                var loginUsers = authenticationSettings.Users;
+                var loginUser = loginUsers.FirstOrDefault(x => x.LoginName.ToLower() == loginName.ToLower());
+                if (loginUser != null)
                 {
-                    return BadRequest("Invalid rolename");
+                    if (!ValidRole(updateLoginUser.Role))
+                    {
+                        return BadRequest("Invalid rolename");
+                    }
+
+                    loginUser.Role = updateLoginUser.Role;
+                    loginUser.DisplayName = updateLoginUser.DisplayName;
+
+                    _settingsService.Save(authenticationSettings);
+
+                    return Ok(loginUser.WithoutPassword());
                 }
-
-                loginUser.Role = updateLoginUser.Role;
-                loginUser.DisplayName = updateLoginUser.DisplayName;
-
-                _settingsService.Save(authenticationSettings);
-
-                return Ok(loginUser.WithoutPassword());
+                else
+                {
+                    return NotFound(loginName);
+                }
             }
             else
             {
-                return NotFound(loginName);
+                return BadRequest("LoginName not set");
             }
         }
 
@@ -153,24 +167,31 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
 
         public IActionResult UpdatePassword([FromRoute] string loginName, [FromBody] string password)
         {
-            var authenticationSettings = _authenticationSettings.Value;
-            var loginUsers = authenticationSettings.Users;
-
-            var loginUser = loginUsers.FirstOrDefault(x => x.LoginName.ToLower() == loginName.ToLower());
-            if (loginUser != null)
+            if (!string.IsNullOrWhiteSpace(loginName))
             {
-                var i = loginUsers.IndexOf(loginUser);
-                loginUser.PasswordMD5Hash = password;
+                var authenticationSettings = _authenticationSettings.Value;
+                var loginUsers = authenticationSettings.Users;
 
-                loginUsers[i] = loginUser;
-                authenticationSettings.Users = loginUsers;
-                _settingsService.Save(authenticationSettings);
+                var loginUser = loginUsers.FirstOrDefault(x => x.LoginName.ToLower() == loginName.ToLower());
+                if (loginUser != null)
+                {
+                    var i = loginUsers.IndexOf(loginUser);
+                    loginUser.PasswordMD5Hash = password;
 
-                return Ok(loginUser.WithoutPassword());
+                    loginUsers[i] = loginUser;
+                    authenticationSettings.Users = loginUsers;
+                    _settingsService.Save(authenticationSettings);
+
+                    return Ok(loginUser.WithoutPassword());
+                }
+                else
+                {
+                    return NotFound(loginName);
+                }
             }
             else
             {
-                return NotFound(loginName);
+                return BadRequest("LoginName not set");
             }
         }
 
@@ -182,22 +203,29 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Delete([FromRoute] string loginName)
         {
-            var authenticationSettings = _authenticationSettings.Value;
-            var loginUsers = authenticationSettings.Users;
-
-            var loginUser = loginUsers.FirstOrDefault(x => x.LoginName.ToLower() == loginName.ToLower());
-            if (loginUser != null)
+            if (!string.IsNullOrWhiteSpace(loginName))
             {
-                loginUsers.Remove(loginUser);
+                var authenticationSettings = _authenticationSettings.Value;
+                var loginUsers = authenticationSettings.Users;
 
-                authenticationSettings.Users = loginUsers;
-                _settingsService.Save(authenticationSettings);
+                var loginUser = loginUsers.FirstOrDefault(x => x.LoginName.ToLower() == loginName.ToLower());
+                if (loginUser != null)
+                {
+                    loginUsers.Remove(loginUser);
 
-                return Ok();
+                    authenticationSettings.Users = loginUsers;
+                    _settingsService.Save(authenticationSettings);
+
+                    return Ok();
+                }
+                else
+                {
+                    return NotFound(loginName);
+                }
             }
             else
             {
-                return NotFound(loginName);
+                return BadRequest("LoginName not set");
             }
         }
 

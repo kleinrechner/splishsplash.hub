@@ -145,7 +145,7 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LoginUser))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public IActionResult UpdatePassword([FromRoute] string loginName, [FromBody] string password)
+        public IActionResult UpdatePassword([FromRoute] string loginName, [FromBody] LoginUserPassword loginUserPassword)
         {
             if (!string.IsNullOrWhiteSpace(loginName))
             {
@@ -156,7 +156,7 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
                 if (loginUser != null)
                 {
                     var i = loginUsers.IndexOf(loginUser);
-                    loginUser.PasswordMD5Hash = password;
+                    loginUser.PasswordMD5Hash = loginUserPassword.Password.GetMD5Hash();
 
                     loginUsers[i] = loginUser;
                     authenticationSettings.Users = loginUsers;

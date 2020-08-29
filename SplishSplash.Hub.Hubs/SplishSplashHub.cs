@@ -4,6 +4,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Kleinrechner.SplishSplash.Backend.HubClientBackgroundService.Abstractions;
+using Kleinrechner.SplishSplash.Backend.HubClientBackgroundService.Abstractions.Models;
+using Kleinrechner.SplishSplash.Hub.Authentication.Abstractions;
 using Kleinrechner.SplishSplash.Hub.Hubs.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
@@ -11,7 +13,7 @@ using Microsoft.AspNetCore.SignalR;
 namespace Kleinrechner.SplishSplash.Hub.Hubs
 {
     [Authorize]
-    public class SplishSplashHub : Microsoft.AspNetCore.SignalR.Hub<ISplishSplashHubClient>, ISplishSplashHub
+    public class SplishSplashHub : Hub<ISplishSplashHubClient>, ISplishSplashHub
     {
         #region Fields
 
@@ -30,34 +32,87 @@ namespace Kleinrechner.SplishSplash.Hub.Hubs
 
         #region Methods
 
+        [Authorize(Roles = nameof(LoginUserRoles.Backend))]
+        public async Task ConnectBackend(SettingsHubModel settingsHubModel)
+        {
+            FillHubModel(settingsHubModel);
+
+            if (string.IsNullOrWhiteSpace(settingsHubModel.ReceiverUserName))
+            {
+                await Clients.User(settingsHubModel.ReceiverUserName).BackendConnected(settingsHubModel);
+            }
+            else
+            {
+                await Clients.Groups(nameof(LoginUserRoles.Frontend)).BackendConnected(settingsHubModel);
+            }
+        }
+
+        [Authorize(Roles = nameof(LoginUserRoles.Backend))]
+        public async Task SendGpioPinChanged(GpioPinChangedModel gpioPinChangedModel)
+        {
+            FillHubModel(gpioPinChangedModel);
+            await Clients.Groups(nameof(LoginUserRoles.Frontend)).GpioPinChangedReceived(gpioPinChangedModel);
+        }
+
+        [Authorize(Roles = nameof(LoginUserRoles.Frontend))]
+        public async Task SendUpdateSettings(SettingsHubModel settingsHubModel)
+        {
+            FillHubModel(settingsHubModel);
+            await Clients.User(settingsHubModel.ReceiverUserName).UpdateSettingsReceived(settingsHubModel);
+        }
+
+        [Authorize(Roles = nameof(LoginUserRoles.Frontend))]
+        public async Task SendChangeGpioPin(ChangeGpioPinModel changeGpioPinModel)
+        {
+            FillHubModel(changeGpioPinModel);
+            await Clients.User(changeGpioPinModel.ReceiverUserName).ChangeGpioPinReceived(changeGpioPinModel);
+        }
+
         public override async Task OnConnectedAsync()
         {
-            var result = await _presenceTracker.ConnectionOpened(Context.User.Identity.Name);
+            var roleName = GetRoleName();
+            var result = await _presenceTracker.ConnectionOpened(GetUserName());
             if (result.UserJoined)
             {
-                //await Clients.All.SendAsync("newMessage", "system", $"{Context.User.Identity.Name} joined");
+                if (roleName == nameof(LoginUserRoles.Frontend))
+                {
+                    var hubModel = new BaseHubModel();
+                    FillHubModel(hubModel);
+                    await Clients.Groups(nameof(LoginUserRoles.Backend)).FrontendConntected(hubModel);
+                }
             }
 
-            var roleName = GetRoleName();
+            if (roleName == nameof(LoginUserRoles.Backend))
+            {
+                var hubModel = new BaseHubModel();
+                await Clients.Caller.FrontendConntected(hubModel);
+            }
+
             if (!string.IsNullOrWhiteSpace(roleName))
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, roleName);
             }
-
-            //await Clients.Caller.SendAsync("newMessage", "system", $"Currently online:\n{string.Join("\n", currentUsers)}");
 
             await base.OnConnectedAsync();
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            var result = await _presenceTracker.ConnectionClosed(Context.User.Identity.Name);
+            var roleName = GetRoleName();
+            var result = await _presenceTracker.ConnectionClosed(GetUserName());
             if (result.UserLeft)
             {
-                //await Clients.All.SendAsync("newMessage", "system", $"{Context.User.Identity.Name} left");
+                if (!string.IsNullOrWhiteSpace(roleName))
+                {
+                    if (roleName == nameof(LoginUserRoles.Backend))
+                    {
+                        var hubModel = new BaseHubModel();
+                        FillHubModel(hubModel);
+                        await Clients.Groups(nameof(LoginUserRoles.Frontend)).BackendDisconnected(hubModel);
+                    }
+                }
             }
 
-            var roleName = GetRoleName();
             if (!string.IsNullOrWhiteSpace(roleName))
             {
                 await Groups.RemoveFromGroupAsync(Context.ConnectionId, roleName);
@@ -66,12 +121,17 @@ namespace Kleinrechner.SplishSplash.Hub.Hubs
             await base.OnDisconnectedAsync(exception);
         }
 
-        public Task SendMessage(string user, string message)
+        private void FillHubModel(BaseHubModel baseHubModel)
         {
-            //return Clients.All.SendAsync("ReceiveMessage", user, message);
-            return Task.CompletedTask;
+            baseHubModel.SenderDisplayName = GetDisplayName();
+            baseHubModel.SenderUserName = GetUserName();
         }
 
+        private string GetUserName()
+        {
+            return Context.User.Identity.Name;
+        }
+        
         private string GetRoleName()
         {
             return Context.User.FindFirst(ClaimTypes.Role)?.Value;

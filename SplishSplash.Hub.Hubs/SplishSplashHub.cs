@@ -37,7 +37,7 @@ namespace Kleinrechner.SplishSplash.Hub.Hubs
         {
             FillHubModel(settingsHubModel);
 
-            if (string.IsNullOrWhiteSpace(settingsHubModel.ReceiverUserName))
+            if (!string.IsNullOrWhiteSpace(settingsHubModel.ReceiverUserName))
             {
                 await Clients.User(settingsHubModel.ReceiverUserName).BackendConnected(settingsHubModel);
             }

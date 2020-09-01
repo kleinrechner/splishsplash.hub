@@ -14,7 +14,7 @@ namespace Kleinrechner.SplishSplash.Hub.Validator
         public CreateLoginUserValidator(IOptions<AuthenticationSettings> _authenticationSettings)
         {
             RuleFor(x => x.LoginName)
-                    .NotEmpty()
+                    .LoginName()
                     .Must(x => !_authenticationSettings.Value.Users.Select(x => x.LoginName).Contains(x))
                     .WithMessage("LoginName already exist");
 

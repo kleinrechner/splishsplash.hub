@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Kleinrechner.SplishSplash.Hub.Hubs
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = "Bearer, BasicAuthentication")]
     public class SplishSplashHub : Hub<ISplishSplashHubClient>, ISplishSplashHub
     {
         #region Fields

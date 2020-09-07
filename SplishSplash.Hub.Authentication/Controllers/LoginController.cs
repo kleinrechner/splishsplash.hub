@@ -51,7 +51,7 @@ namespace Kleinrechner.SplishSplash.Hub.Authentication.Controllers
             {
                 var claimList = loginUser.GetClaims();
                 var tokenString = GenerateJsonNWebToken(claimList);
-                response = Ok(new { token = tokenString });
+                response = Ok(new { user = loginUser.WithoutPassword(), token = tokenString });
             }
 
             return response;

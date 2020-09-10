@@ -6,10 +6,10 @@
     <RootNamespace>Kleinrechner.SplishSplash.Hub.Authentication.Abstractions</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Copyright>Copyright © Kleinrechner 2020</Copyright>
-    <PackageProjectUrl>https://kleinrechner.visualstudio.com/SplishSplash</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/kleinrechner</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://kleinrechner.visualstudio.com/SplishSplash/_git/SplishSplash.Hub</RepositoryUrl>
-    <Version>1.0.2</Version>
+    <RepositoryUrl>https://github.com/kleinrechner/splishsplash.hub</RepositoryUrl>
+    <Version>0.1.0</Version>
   </PropertyGroup>
 
 </Project>

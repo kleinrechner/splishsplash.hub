@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Kleinrechner.SplishSplash.Backend.HubClientBackgroundService.Abstractions" Version="1.1.1" />
+    <PackageReference Include="Kleinrechner.SplishSplash.Backend.HubClientBackgroundService.Abstractions" Version="0.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.7" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.7" />

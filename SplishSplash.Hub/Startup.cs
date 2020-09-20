@@ -54,13 +54,7 @@ namespace Kleinrechner.SplishSplash.Hub
                 });
             });
 
-            services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
-            {
-                builder
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowAnyOrigin();
-            }));
+            services.AddCors();
 
             services.AddControllers()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UpdateLoginUserValidator>());
@@ -82,11 +76,12 @@ namespace Kleinrechner.SplishSplash.Hub
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors("CorsPolicy");
-
-            app.UseCors(CorsConstants.AnyOrigin);
-
             app.UseHttpsRedirection();
+
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();

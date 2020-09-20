@@ -9,9 +9,6 @@ namespace Kleinrechner.SplishSplash.Hub.Models
     public class UpdateLoginUser
     {
         [Required]
-        public string DisplayName { get; set; }
-
-        [Required]
         public string Role { get; set; }
     }
 }

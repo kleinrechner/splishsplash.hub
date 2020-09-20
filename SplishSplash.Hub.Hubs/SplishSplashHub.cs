@@ -123,7 +123,6 @@ namespace Kleinrechner.SplishSplash.Hub.Hubs
 
         private void FillHubModel(BaseHubModel baseHubModel)
         {
-            baseHubModel.SenderDisplayName = GetDisplayName();
             baseHubModel.SenderUserName = GetUserName();
         }
 
@@ -135,11 +134,6 @@ namespace Kleinrechner.SplishSplash.Hub.Hubs
         private string GetRoleName()
         {
             return Context.User.FindFirst(ClaimTypes.Role)?.Value;
-        }
-
-        private string GetDisplayName()
-        {
-            return Context.User.FindFirst(ClaimTypes.Name)?.Value;
         }
 
         #endregion

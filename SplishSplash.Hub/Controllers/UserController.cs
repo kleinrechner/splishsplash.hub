@@ -90,7 +90,6 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
             var loginUsers = authenticationSettings.Users;
 
             var loginUser = new LoginUser();
-            loginUser.DisplayName = createLoginUser.DisplayName;
             loginUser.LoginName = createLoginUser.LoginName;
             loginUser.PasswordMD5Hash = createLoginUser.Password.GetMD5Hash();
             loginUser.Role = createLoginUser.Role;
@@ -121,7 +120,6 @@ namespace Kleinrechner.SplishSplash.Hub.Controllers
                 if (loginUser != null)
                 {
                     loginUser.Role = updateLoginUser.Role;
-                    loginUser.DisplayName = updateLoginUser.DisplayName;
 
                     _settingsService.Save(authenticationSettings);
 

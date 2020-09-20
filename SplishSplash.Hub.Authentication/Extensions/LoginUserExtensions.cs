@@ -13,7 +13,6 @@ namespace Kleinrechner.SplishSplash.Hub.Authentication.Extensions
         {
             return new LoginUser()
             {
-                DisplayName = loginUser.DisplayName,
                 LoginName = loginUser.LoginName,
                 Role = loginUser.Role
             };
@@ -27,11 +26,6 @@ namespace Kleinrechner.SplishSplash.Hub.Authentication.Extensions
                 new Claim(ClaimTypes.Role, loginUser.Role),
                 new Claim(ClaimTypes.Hash, loginUserHash), 
             });
-
-            if (!string.IsNullOrWhiteSpace(loginUser.DisplayName))
-            {
-                claimList.Add(new Claim(ClaimTypes.Name, loginUser.DisplayName));
-            }
 
             return claimList;
         }

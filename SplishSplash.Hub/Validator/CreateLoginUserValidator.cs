@@ -18,7 +18,6 @@ namespace Kleinrechner.SplishSplash.Hub.Validator
                     .Must(x => !_authenticationSettings.Value.Users.Select(x => x.LoginName).Contains(x))
                     .WithMessage("LoginName already exist");
 
-            RuleFor(x => x.DisplayName).NotEmpty();
             RuleFor(x => x.Password).Password();
             RuleFor(x => x.Role).NotEmpty().IsEnumName(typeof(LoginUserRoles));
         }

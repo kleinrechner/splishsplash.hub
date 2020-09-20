@@ -12,7 +12,6 @@ namespace Kleinrechner.SplishSplash.Hub.Validator
     {
         public UpdateLoginUserValidator()
         {
-            RuleFor(x => x.DisplayName).NotEmpty();
             RuleFor(x => x.Role).NotEmpty().IsEnumName(typeof(LoginUserRoles));
         }
     }

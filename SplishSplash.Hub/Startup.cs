@@ -79,7 +79,7 @@ namespace Kleinrechner.SplishSplash.Hub
             app.UseHttpsRedirection();
 
             app.UseCors(builder => builder
-                .AllowAnyOrigin()
+                .WithOrigins("http://localhost:4200")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials());

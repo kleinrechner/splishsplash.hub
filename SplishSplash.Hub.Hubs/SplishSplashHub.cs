@@ -128,7 +128,7 @@ namespace Kleinrechner.SplishSplash.Hub.Hubs
 
         private string GetUserName()
         {
-            return Context.User.Identity.Name;
+            return Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
         
         private string GetRoleName()

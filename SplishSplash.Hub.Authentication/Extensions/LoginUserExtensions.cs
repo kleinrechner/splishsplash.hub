@@ -23,8 +23,9 @@ namespace Kleinrechner.SplishSplash.Hub.Authentication.Extensions
             var loginUserHash = loginUser.GetMD5Hash();
             var claimList = new List<Claim>(new[] {
                 new Claim(ClaimTypes.NameIdentifier, loginUser.LoginName.ToLower()),
+                new Claim(ClaimTypes.Name, loginUser.LoginName.ToLower()),
                 new Claim(ClaimTypes.Role, loginUser.Role),
-                new Claim(ClaimTypes.Hash, loginUserHash), 
+                new Claim(ClaimTypes.Hash, loginUserHash) 
             });
 
             return claimList;

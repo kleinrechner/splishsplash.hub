@@ -54,6 +54,16 @@ namespace Kleinrechner.SplishSplash.Hub.Hubs
             await Clients.Groups(nameof(LoginUserRoles.Frontend)).GpioPinChangedReceived(gpioPinChangedModel);
         }
 
+        [Authorize(Roles = nameof(LoginUserRoles.Backend))]
+        public async Task BackendCommandFailed(BackendCommandFailedModel backendCommandFailedModel)
+        {
+            if (!string.IsNullOrWhiteSpace(backendCommandFailedModel.ReceiverUserName))
+            {
+                FillHubModel(backendCommandFailedModel);
+                await Clients.User(backendCommandFailedModel.ReceiverUserName).BackendCommandFailedReceived(backendCommandFailedModel);
+            }
+        }
+
         [Authorize(Roles = nameof(LoginUserRoles.Frontend))]
         public async Task SendUpdateSettings(SettingsHubModel settingsHubModel)
         {

@@ -33,17 +33,17 @@ namespace Kleinrechner.SplishSplash.Hub.Hubs
         #region Methods
 
         [Authorize(Roles = nameof(LoginUserRoles.Backend))]
-        public async Task ConnectBackend(SettingsHubModel settingsHubModel)
+        public async Task ConnectBackend(BackendSettingsHubModel backendSettingsHubModel)
         {
-            FillHubModel(settingsHubModel);
+            FillHubModel(backendSettingsHubModel);
 
-            if (!string.IsNullOrWhiteSpace(settingsHubModel.ReceiverUserName))
+            if (!string.IsNullOrWhiteSpace(backendSettingsHubModel.ReceiverUserName))
             {
-                await Clients.User(settingsHubModel.ReceiverUserName).BackendConnected(settingsHubModel);
+                await Clients.User(backendSettingsHubModel.ReceiverUserName).BackendConnected(backendSettingsHubModel);
             }
             else
             {
-                await Clients.Groups(nameof(LoginUserRoles.Frontend)).BackendConnected(settingsHubModel);
+                await Clients.Groups(nameof(LoginUserRoles.Frontend)).BackendConnected(backendSettingsHubModel);
             }
         }
 
@@ -52,6 +52,13 @@ namespace Kleinrechner.SplishSplash.Hub.Hubs
         {
             FillHubModel(gpioPinChangedModel);
             await Clients.Groups(nameof(LoginUserRoles.Frontend)).GpioPinChangedReceived(gpioPinChangedModel);
+        }
+
+        [Authorize(Roles = nameof(LoginUserRoles.Backend))]
+        public async Task SettingsUpdated(BackendSettingsHubModel backendSettingsHubModel)
+        {
+            FillHubModel(backendSettingsHubModel);
+            await Clients.Groups(nameof(LoginUserRoles.Frontend)).SettingsUpdatedReceived(backendSettingsHubModel);
         }
 
         [Authorize(Roles = nameof(LoginUserRoles.Backend))]
@@ -65,10 +72,10 @@ namespace Kleinrechner.SplishSplash.Hub.Hubs
         }
 
         [Authorize(Roles = nameof(LoginUserRoles.Frontend))]
-        public async Task SendUpdateSettings(SettingsHubModel settingsHubModel)
+        public async Task SendUpdateSettings(BackendSettingsHubModel backendSettingsHubModel)
         {
-            FillHubModel(settingsHubModel);
-            await Clients.User(settingsHubModel.ReceiverUserName).UpdateSettingsReceived(settingsHubModel);
+            FillHubModel(backendSettingsHubModel);
+            await Clients.User(backendSettingsHubModel.ReceiverUserName).UpdateSettingsReceived(backendSettingsHubModel);
         }
 
         [Authorize(Roles = nameof(LoginUserRoles.Frontend))]

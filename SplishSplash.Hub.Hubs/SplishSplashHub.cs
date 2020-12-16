@@ -79,7 +79,7 @@ namespace Kleinrechner.SplishSplash.Hub.Hubs
         }
 
         [Authorize(Roles = nameof(LoginUserRoles.Frontend))]
-        public async Task SendChangeGpioPin(ChangeGpioPinModel changeGpioPinModel)
+        public async Task SendChangeGpioPin(ChangeGpioPinHubModel changeGpioPinModel)
         {
             FillHubModel(changeGpioPinModel);
             await Clients.User(changeGpioPinModel.ReceiverUserName).ChangeGpioPinReceived(changeGpioPinModel);
